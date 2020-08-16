@@ -9,7 +9,7 @@ public class Obstacle : MonoBehaviour
     public int range = 2000;
 
     public Collider coll;
-    void Start()
+    public void Start()
     {
         coll = GetComponent<Collider>();
     }
@@ -25,6 +25,4 @@ public class Obstacle : MonoBehaviour
         Vector3 closestPoint = coll.ClosestPointOnBounds(diff);
         return diff - closestPoint;
     }
-
-
 }

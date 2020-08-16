@@ -7,11 +7,14 @@ using Random = UnityEngine.Random;
 public class Predator : MonoBehaviour
 {
     public int range;
+
     public Vector3 position;
     public Vector3 velocity;
     public Vector3 acceleration;
-    private float maxSpeed = 50;
     public Vector3 target;
+
+    private float maxSpeed = 50;
+
 
     void Start()
     {
@@ -19,7 +22,6 @@ public class Predator : MonoBehaviour
         this.velocity = target - this.transform.position;
         velocity.Normalize();
         this.velocity *= maxSpeed;
-
     }
 
     void Update()
@@ -87,13 +89,13 @@ public class Predator : MonoBehaviour
         }
     }
 
-    public Vector3 huntBoid(List<Movement> boids)
+    public Vector3 huntBoid(List<Boid> boids)
     {
 
         Vector3 steering = new Vector3();
-        Movement huntedBoid = null;
+        Boid huntedBoid = null;
         float distance = 1000000;
-        foreach (Movement boid in boids)
+        foreach (Boid boid in boids)
         {
             float currentDist = Vector3.Distance(this.transform.position, boid.transform.position);
             if (currentDist < distance)
@@ -127,8 +129,7 @@ public class Predator : MonoBehaviour
 
         return steering;
     }
-
-    public void hunt(List<Movement> boids)
+    public void hunt(List<Boid> boids)
     {
         acceleration *= 0;
         acceleration += huntBoid(boids);

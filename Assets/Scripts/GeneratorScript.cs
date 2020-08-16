@@ -6,27 +6,26 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using Random = UnityEngine.Random;
 
-public class StartScript : MonoBehaviour
+public class GeneratorScript : MonoBehaviour
 {
     public GameObject boidPrefab;
-    public GameObject obstaclePrefab;
     public GameObject predatorPrefab;
 
     public int boidsAmount;
-    public int obstaclesAmount;
     public int predatorsAmount;
-    List<Movement> boids = new List<Movement>();
+
+
+    List<Boid> boids = new List<Boid>();
     List<Obstacle> obstacles = new List<Obstacle>();
     List<Predator> predators = new List<Predator>();
 
 
-    void Start()
+    public void Start()
     {
-
         for (int i = 0; i < boidsAmount; i++)
         {
-            Vector3 position = new Vector3(Random.Range(1000, 10000), Random.Range(5, 10000), Random.Range(5, 10000));
-            Movement boid = Instantiate(boidPrefab, position, Quaternion.identity).GetComponent<Movement>();
+            Vector3 position = new Vector3(Random.Range(1000, 10000), Random.Range(5, 1000), Random.Range(5, 10000));
+            Boid boid = Instantiate(boidPrefab, position, Quaternion.identity).GetComponent<Boid>();
             boid.name = "Boid " + i;
             boid.position = position;
             boid.velocity = new Vector3(Random.Range(-50.0f, 50.0f), Random.Range(-50.0f, 50.0f), Random.Range(-50.0f, 50.0f));
@@ -42,22 +41,9 @@ public class StartScript : MonoBehaviour
                 boid.GetComponent<Renderer>().material.color = Color.white;
             }
         }
-        //for (int i = 0; i < obstaclesAmount; i++)
-        //{
-        //    Vector3 position = new Vector3(Random.Range(1000, 10000), Random.Range(1000, 10000), Random.Range(1000, 10000));
-        //    Obstacle obstacle = Instantiate(obstaclePrefab, position, Quaternion.identity).GetComponent<Obstacle>();
-        //    obstacle.name = "Obstacle " + i;
-        //    obstacle.GetComponent<Renderer>().material.color = Color.blue;
-        //    obstacles.Add(obstacle);
-        //}
-        //Vector3 position2 = new Vector3(5000, 5000, 5000);
-        //Obstacle obstacle2 = Instantiate(obstaclePrefab, position2, Quaternion.identity).GetComponent<Obstacle>();
-        //obstacle2.name = "Obstacle Constant" ;
-        //obstacle2.GetComponent<Renderer>().material.color = Color.blue;
-        //obstacles.Add(obstacle2);
 
         GameObject[] cubes = GameObject.FindGameObjectsWithTag("obstacle");
-        for(int i  = 0; i <cubes.Length; i++)
+        for (int i = 0; i < cubes.Length; i++)
         {
             obstacles.Add(cubes[i].GetComponent<Obstacle>());
         }
@@ -73,9 +59,9 @@ public class StartScript : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    public void Update()
     {
-        foreach(Movement boid in boids)
+        foreach (Boid boid in boids)
         {
             boid.flock(boids, obstacles, predators);
         }
@@ -86,7 +72,7 @@ public class StartScript : MonoBehaviour
     }
     public void setSeparationMaxSpeed(Single maxSpeed)
     {
-        foreach (Movement boid in boids)
+        foreach (Boid boid in boids)
         {
             boid.maxSpeedSeparation = maxSpeed;
         }
@@ -94,14 +80,14 @@ public class StartScript : MonoBehaviour
 
     public void setCohesionMaxSpeed(Single maxSpeed)
     {
-        foreach (Movement boid in boids)
+        foreach (Boid boid in boids)
         {
             boid.maxSpeedCohesion = maxSpeed;
         }
     }
     public void setAlignMaxSpeed(Single maxSpeed)
     {
-        foreach (Movement boid in boids)
+        foreach (Boid boid in boids)
         {
             boid.maxSpeedAlign = maxSpeed;
         }
